@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MotelRoomContext))]
-    [Migration("20200701140742_MotelRoom")]
+    [Migration("20200703033059_MotelRoom")]
     partial class MotelRoom
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,6 +27,9 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -52,6 +55,8 @@ namespace DataAccess.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Category");
                 });
@@ -99,15 +104,13 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Room");
                 });
 
-            modelBuilder.Entity("DataAccess.Models.Rooms", b =>
+            modelBuilder.Entity("DataAccess.Models.Categorys", b =>
                 {
-                    b.HasOne("DataAccess.Models.Categorys", "Categorys")
-                        .WithMany()
+                    b.HasOne("DataAccess.Models.Rooms", null)
+                        .WithMany("Categorys")
                         .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618

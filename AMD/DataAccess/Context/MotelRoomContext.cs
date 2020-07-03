@@ -15,5 +15,7 @@ namespace DataAccess.Context
         {
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS; Database=MotelRoom; Trusted_Connection=True;");
         }
+
+
     }
 }

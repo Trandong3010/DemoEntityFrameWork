@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Context;
@@ -8,28 +9,52 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Services
 {
-    public interface ICategoryService
+    public class CategoryService
     {
-        Task<IList<Categorys>> GetAll();
+        public MotelRoomContext _motelRoomContext = new MotelRoomContext();
 
-        Task<Categorys> GetById(int? id);
+        public CategoryService() { }
 
-
-    }
-
-    public class CategoryService : ICategoryService
-    {
-        protected readonly MotelRoomContext _context;
-
-        public async Task<IList<Categorys>> GetAll()
+        public IEnumerable<Categorys> GetList()
         {
-            var list = await _context.Categoryses.AsNoTracking().ToListAsync();
+            var list = _motelRoomContext.Categoryses.ToList();
             return list;
         }
 
-        public Task<Categorys> GetById(int? id)
+        public void Insert(Categorys category)
         {
-            throw new NotImplementedException();
+            if (category == null) return;
+
+            try
+            {
+                _motelRoomContext.Categoryses.Add(category);
+                _motelRoomContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error Invalid operation performed {e.Message}");
+            }
+        }
+
+        public void Update(Categorys category)
+        {
+            _motelRoomContext.Update<Categorys>(category);
+            _motelRoomContext.SaveChanges();
+        }
+        
+        public void Delete(int id)
+        {
+            if(id == 0) return;
+            var list = _motelRoomContext.Categoryses.FirstOrDefault(x => x.Id == id);
+            try
+            {
+                _motelRoomContext.Categoryses.Remove(list);
+                _motelRoomContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error Invalid operation performed {e.Message}");
+            }
         }
     }
 }

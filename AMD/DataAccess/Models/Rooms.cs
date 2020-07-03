@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,6 +9,7 @@ namespace DataAccess.Models
     public class Rooms
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [StringLength(50), Required]
         public string RoomName { get; set; }
@@ -27,8 +29,11 @@ namespace DataAccess.Models
 
         public int? CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public virtual Categorys Categorys { get; set; }
+        public virtual ICollection<Categorys> Categorys { get; set; }
 
-        public Rooms() { }
+        public Rooms()
+        {
+            Categorys = new HashSet<Categorys>();
+        }
     }
 }

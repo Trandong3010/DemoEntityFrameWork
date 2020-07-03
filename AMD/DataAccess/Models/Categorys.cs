@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DataAccess.Models
@@ -10,7 +11,9 @@ namespace DataAccess.Models
     [Table("Category")]
     public class Categorys
     {
+        
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required ,StringLength(100)]
         public string CategoryName { get; set; }
@@ -24,6 +27,5 @@ namespace DataAccess.Models
 
         public DateTime UpdatedDate { get; set; }
 
-        public Categorys() { }
     }
 }
